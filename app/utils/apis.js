@@ -1,0 +1,25 @@
+import request from 'utils/request';
+import Cookies from 'universal-cookie';
+
+const urlBase = 'http://localhost:3001'; // Can configure with global
+const cookies = new Cookies();
+const token = cookies.get('token');
+export const getNames = () =>
+  request(`${urlBase}/names`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authentication: `token ${token}`,
+    },
+  });
+export const employeeLogin = payload =>
+  request(`${urlBase}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authentication: `token ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });

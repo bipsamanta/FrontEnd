@@ -13,30 +13,46 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectEmployeeDetails from './selectors';
+import { makeSelectEmployeeDetails } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import EmployeeDetailsForm from './EmployeeDetailsForm';
+import { getNames, employeeLogin, updateCommonInfo } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class EmployeeDetails extends React.PureComponent {
   handleSubmit = values => {
-    console.log(values);
-    return false;
+    const data = { userName: 'Biplab', password: '123' };
+    const commonInfo = {
+      age: 30,
+    };
+    this.props.updateCommonInfo(commonInfo);
+    this.props.requestLoginInfo(data);
   };
 
+  componentDidMount() {
+    this.props.requestNames();
+  }
+
   render() {
+    const { employeeDetails } = this.props;
     return (
       <div>
-        <EmployeeDetailsForm handleSubmit={this.handleSubmit} />
+        <EmployeeDetailsForm
+          handleSubmit={this.handleSubmit}
+          employeeDetails={employeeDetails}
+        />
       </div>
     );
   }
 }
 
 EmployeeDetails.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  requestNames: PropTypes.func,
+  requestLoginInfo: PropTypes.func,
+  updateCommonInfo: PropTypes.func,
+  employeeDetails: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -45,7 +61,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    requestNames: () => dispatch(getNames()),
+    requestLoginInfo: data => dispatch(employeeLogin(data)),
+    updateCommonInfo: commonInfo => dispatch(updateCommonInfo(commonInfo)),
   };
 }
 

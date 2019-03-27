@@ -5,17 +5,34 @@
  */
 
 import { fromJS } from 'immutable';
-import { DEFAULT_ACTION } from './constants';
+import { GET_NAMES_SUCEEDED, UPDATE_COMMON_INFO } from './constants';
 
-export const initialState = fromJS({});
+export const initialState = fromJS({
+  employee: {
+    Names: [],
+  },
+});
 
-function employeeDetailsReducer(state = initialState, action) {
+const getNamesSuccedded = (state, names) => {
+  const newState = state
+    .setIn(['employee', 'Names'], names)
+    .set(['temp'], true);
+  // Other features...
+  return newState;
+};
+
+const updateCommonInfo = (state, commonInfo) =>
+  state.mergeIn(['common'], fromJS(commonInfo));
+
+function employeeReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
+    case GET_NAMES_SUCEEDED:
+      return getNamesSuccedded(state, action.names);
+    case UPDATE_COMMON_INFO:
+      return updateCommonInfo(state, action.commonInfo);
     default:
       return state;
   }
 }
 
-export default employeeDetailsReducer;
+export default employeeReducer;

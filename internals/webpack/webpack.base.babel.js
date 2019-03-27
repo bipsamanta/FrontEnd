@@ -117,6 +117,10 @@ module.exports = options => ({
     // Always expose NODE_ENV to webpack, in order to use `process.env.NODE_ENV`
     // inside your code for any environment checks; Terser will automatically
     // drop any unreachable code.
+    // new webpack.ProvidePlugin({
+    //   // make fetch available
+    //   fetch: 'exports-loader?self.fetch!whatwg-fetch',
+    // }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),

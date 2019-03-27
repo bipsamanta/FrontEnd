@@ -5,8 +5,8 @@ import { initialState } from './reducer';
  * Direct selector to the employeeDetails state domain
  */
 
-const selectEmployeeDetailsDomain = state =>
-  state.get('employeeDetails', initialState);
+export const selectEmployeeDetails = state =>
+  state && state.get('employeeDetails', initialState);
 
 /**
  * Other specific selectors
@@ -17,7 +17,23 @@ const selectEmployeeDetailsDomain = state =>
  */
 
 const makeSelectEmployeeDetails = () =>
-  createSelector(selectEmployeeDetailsDomain, substate => substate.toJS());
+  createSelector(selectEmployeeDetails, substate => substate.toJS());
 
-export default makeSelectEmployeeDetails;
-export { selectEmployeeDetailsDomain };
+const selectAvailableData = createSelector(
+  [selectEmployeeDetails],
+  substate => {
+    if (!substate) {
+      return null;
+    }
+
+    if (substate.data1) {
+      return substate.data1;
+    }
+    if (substate.data2) {
+      return substate.data1;
+    }
+    return null;
+  },
+);
+
+export { makeSelectEmployeeDetails, selectAvailableData };

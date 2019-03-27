@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 /**
  * Parses the JSON returned by a network request
  *
@@ -38,6 +39,8 @@ function checkStatus(response) {
  * @return {object}           The response data
  */
 export default function request(url, options) {
+  // options.credentials = 'include';
+  // options.credentials = 'same-origin';
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON);

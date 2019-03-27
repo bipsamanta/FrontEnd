@@ -34,7 +34,7 @@ class EmployeeDetailsForm extends React.PureComponent {
           <Button
             variant="outlined"
             color="primary"
-            type="submit"
+            onClick={this.props.handleSubmit}
             disabled={pristine || submitting}
           >
             Primary
@@ -45,11 +45,6 @@ class EmployeeDetailsForm extends React.PureComponent {
     );
   }
 }
-
-// LoginForm.propTypes = {
-//   firstName: PropTypes.text,
-// };
-// export default LoginForm;
 export default reduxForm({
   form: FORM_NAME,
 })(EmployeeDetailsForm);

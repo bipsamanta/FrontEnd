@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { isAuthenticated } from 'containers/App/auth';
 import A from './A';
 import Img from './Img';
 import NavBar from './NavBar';
@@ -17,7 +18,9 @@ class Header extends React.Component {
           <HeaderLink to="/">
             <FormattedMessage {...messages.home} />
           </HeaderLink>
-          <HeaderLink to="/EmployeeDetails">Add New</HeaderLink>
+          {isAuthenticated() && (
+            <HeaderLink to="/EmployeeDetails">Add New</HeaderLink>
+          )}
         </NavBar>
       </div>
     );
