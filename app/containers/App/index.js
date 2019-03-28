@@ -16,6 +16,8 @@ import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import TableView from 'containers/TableView/Loadable';
 import EmployeeDetails from 'containers/EmployeeDetails/Loadable';
+import LoginPage from 'containers/LoginPage';
+import RegisterPage from 'containers/RegisterPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
@@ -43,6 +45,8 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={TableView} />
         <Route path="/EmployeeDetails" component={EmployeeDetails} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/register" component={RegisterPage} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />
