@@ -11,13 +11,12 @@ import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 
-import HomePage from 'containers/HomePage/Loadable';
-import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import TableView from 'containers/TableView/Loadable';
 import EmployeeDetails from 'containers/EmployeeDetails/Loadable';
 import LoginPage from 'containers/LoginPage';
 import RegisterPage from 'containers/RegisterPage/Loadable';
+import ModalConductor from 'containers/ModalConductor';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
@@ -49,6 +48,7 @@ export default function App() {
         <Route path="/register" component={RegisterPage} />
         <Route path="" component={NotFoundPage} />
       </Switch>
+      <ModalConductor />
       <Footer />
       <GlobalStyle />
     </AppWrapper>

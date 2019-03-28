@@ -1,6 +1,24 @@
-// import { take, call, put, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 
-// Individual exports for testing
+import * as apis from 'utils/apis';
+import displayError from 'global-components/errors';
+import { SAVE_USER_ACTION } from './constants';
+import { saveUserFalied } from './actions';
+
+export function* requestSaveUser(action) {
+  try {
+    const payload = {
+      userName: action.userInfo.userName,
+      password: action.userInfo.password,
+    };
+    yield call(apis.register, payload);
+    yield put(push(`/login`));
+  } catch (error) {
+    yield displayError(error, saveUserFalied(error));
+  }
+}
+
 export default function* registerPageSaga() {
-  // See example in containers/HomePage/saga.js
+  yield takeLatest(SAVE_USER_ACTION, requestSaveUser);
 }

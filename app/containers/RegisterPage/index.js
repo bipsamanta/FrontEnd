@@ -8,45 +8,56 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
+import { isValid } from 'redux-form/immutable';
 import { compose } from 'redux';
+import { submit } from 'redux-form';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectRegisterPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 import RegisterForm from './registerForm';
+import { saveUser } from './actions';
+
+const FORM_NAME = 'registerForm';
 
 /* eslint-disable react/prefer-stateless-function */
 export class RegisterPage extends React.PureComponent {
+  handleSubmit = values => {
+    const data = {
+      userName: values.get('email'),
+      password: values.get('password'),
+    };
+    this.props.saveUserData(data);
+  };
+
   render() {
+    const { isFormValid } = this.props;
     return (
       <div>
         <Helmet>
           <title>RegisterPage</title>
           <meta name="description" content="Description of RegisterPage" />
         </Helmet>
-        <FormattedMessage {...messages.header} />
-        <RegisterForm />
+        <RegisterForm isFormValid={isFormValid} onSubmit={this.handleSubmit} />
       </div>
     );
   }
 }
 
 RegisterPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  isFormValid: PropTypes.bool,
+  saveUserData: PropTypes.func,
 };
 
-const mapStateToProps = createStructuredSelector({
-  registerPage: makeSelectRegisterPage(),
+const mapStateToProps = state => ({
+  isFormValid: isValid(FORM_NAME)(state),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    submitForm: () => dispatch(submit(FORM_NAME)),
+    saveUserData: userInfo => dispatch(saveUser(userInfo)),
   };
 }
 

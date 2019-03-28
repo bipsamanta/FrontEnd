@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm } from 'redux-form/immutable';
+import { Field, reduxForm } from 'redux-form/immutable';
 import { Link as RouterLink } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -13,6 +13,9 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Link from '@material-ui/core/Link';
+
+import TextInput from 'components/Fields/TextInput';
+import * as rules from 'utils/validationRules';
 
 const styles = theme => ({
   main: {
@@ -50,7 +53,7 @@ const FORM_NAME = 'registerForm';
 
 class RegisterForm extends React.PureComponent {
   render() {
-    const { handleSubmit, pristine, reset, submitting, classes } = this.props;
+    const { classes, isFormValid } = this.props;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -62,34 +65,44 @@ class RegisterForm extends React.PureComponent {
             Register
           </Typography>
           <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="password"
+            <FormControl margin="normal" fullWidth>
+              <Field
+                id="email"
+                name="email"
+                component={TextInput}
+                validate={[rules.required, rules.validateEmail]}
+                label="Email Address"
+                autoFocus
+                required
               />
             </FormControl>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="retypePassword">Re-type password</InputLabel>
-              <Input
-                name="retypePassword"
-                type="password"
+              <Field
+                id="password"
+                name="password"
+                component={TextInput}
+                validate={[rules.required]}
+                label="Password"
+                required
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <Field
                 id="retypePassword"
-                autoComplete="Re-type password"
+                name="retypePassword"
+                component={TextInput}
+                validate={[rules.required, rules.validateReEnterPassword]}
+                label="Re-type Password"
+                required
               />
             </FormControl>
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              disabled={!isFormValid}
+              onClick={this.props.handleSubmit}
             >
               Register
             </Button>
@@ -106,5 +119,8 @@ class RegisterForm extends React.PureComponent {
 
 RegisterForm.propTypes = {
   classes: PropTypes.object.isRequired,
+  isFormValid: PropTypes.bool,
+
+  handleSubmit: PropTypes.func,
 };
 export default withStyles(styles)(reduxForm({ form: FORM_NAME })(RegisterForm));

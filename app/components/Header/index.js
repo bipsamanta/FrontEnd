@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import { isAuthenticated } from 'containers/App/auth';
+import { isAuthenticated, deleteCookie } from 'containers/App/auth';
 import LocaleToggle from 'containers/LocaleToggle';
 import messages from './messages';
 
@@ -27,6 +27,10 @@ const styles = {
 };
 /* eslint-disable react/prefer-stateless-function */
 class Header extends React.Component {
+  logout = () => {
+    deleteCookie();
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -51,9 +55,21 @@ class Header extends React.Component {
                 Add New
               </Button>
             )}
-            <Button color="inherit" component={Link} to="/login">
-              Login
-            </Button>
+            {!isAuthenticated() && (
+              <Button color="inherit" component={Link} to="/login">
+                Login
+              </Button>
+            )}
+            {isAuthenticated() && (
+              <Button
+                color="inherit"
+                component={Link}
+                to="/login"
+                onClick={this.logout}
+              >
+                Logout
+              </Button>
+            )}
             <section>
               <LocaleToggle />
             </section>

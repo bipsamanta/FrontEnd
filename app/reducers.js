@@ -9,6 +9,7 @@ import { reducer as formReducer } from 'redux-form/immutable';
 import history from 'utils/history';
 import globalReducer from 'containers/App/reducer';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
+import modalReducer from 'containers/ModalConductor/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -17,6 +18,7 @@ export default function createReducer(injectedReducers = {}) {
   const rootReducer = combineReducers({
     global: globalReducer,
     language: languageProviderReducer,
+    currentModal: modalReducer,
     form: formReducer,
     ...injectedReducers,
   });

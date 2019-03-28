@@ -53,14 +53,7 @@ const FORM_NAME = 'loginForm';
 
 class LoginForm extends React.PureComponent {
   render() {
-    const {
-      handleSubmit,
-      pristine,
-      reset,
-      submitting,
-      classes,
-      isFormValid,
-    } = this.props;
+    const { classes, isFormValid } = this.props;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -79,7 +72,6 @@ class LoginForm extends React.PureComponent {
                 component={TextInput}
                 validate={[rules.required]}
                 label="Email Address"
-                oninput="setCustomValidity('')"
                 autoFocus
               />
             </FormControl>
@@ -121,5 +113,8 @@ class LoginForm extends React.PureComponent {
 }
 LoginForm.propTypes = {
   classes: PropTypes.object.isRequired,
+  isFormValid: PropTypes.bool,
+
+  handleSubmit: PropTypes.func,
 };
 export default withStyles(styles)(reduxForm({ form: FORM_NAME })(LoginForm));

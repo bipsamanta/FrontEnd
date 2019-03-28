@@ -23,3 +23,22 @@ export const employeeLogin = payload =>
     },
     body: JSON.stringify(payload),
   });
+export const login = payload =>
+  request(`${urlBase}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+export const register = payload =>
+  request(`${urlBase}/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });

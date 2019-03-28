@@ -18,13 +18,18 @@ import makeSelectLoginPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import LoginForm from './loginForm';
+import { requestLogin } from './actions';
 
 const FORM_NAME = 'loginForm';
 
 /* eslint-disable react/prefer-stateless-function */
 export class LoginPage extends React.PureComponent {
   handleSubmit = values => {
-    console.log(values);
+    const data = {
+      userName: values.get('email'),
+      password: values.get('password'),
+    };
+    this.props.requestLoginInfo(data);
   };
 
   render() {
@@ -43,6 +48,7 @@ export class LoginPage extends React.PureComponent {
 
 LoginPage.propTypes = {
   isFormValid: PropTypes.bool,
+  requestLoginInfo: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -53,6 +59,7 @@ const mapStateToProps = state => ({
 function mapDispatchToProps(dispatch) {
   return {
     submitForm: () => dispatch(submit(FORM_NAME)),
+    requestLoginInfo: data => dispatch(requestLogin(data)),
   };
 }
 
