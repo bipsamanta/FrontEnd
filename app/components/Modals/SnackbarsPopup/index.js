@@ -105,9 +105,12 @@ const styles2 = theme => ({
 
 /* eslint-disable react/prefer-stateless-function */
 class SnackbarsPopup extends React.PureComponent {
-  state = {
-    open: true,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: true,
+    };
+  }
 
   handleClick = () => {
     this.setState({ open: true });
@@ -122,7 +125,7 @@ class SnackbarsPopup extends React.PureComponent {
   };
 
   render() {
-    const { classes, content } = this.props;
+    const { content, messageType } = this.props;
 
     return (
       <div>
@@ -137,7 +140,7 @@ class SnackbarsPopup extends React.PureComponent {
         >
           <MySnackbarContentWrapper
             onClose={this.handleClose}
-            variant="success"
+            variant={messageType} // success,error,warning,info
             message={content}
           />
         </Snackbar>
@@ -147,7 +150,10 @@ class SnackbarsPopup extends React.PureComponent {
 }
 
 SnackbarsPopup.propTypes = {
-  classes: PropTypes.object.isRequired,
+  content: PropTypes.string,
+  messageType: PropTypes.string,
+
+  close: PropTypes.func,
 };
 export const mapDispatchToProps = dispatch => ({
   close: () => dispatch(closeModal()),

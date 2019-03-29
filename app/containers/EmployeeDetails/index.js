@@ -7,41 +7,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { isValid } from 'redux-form/immutable';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectEmployeeDetails } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 import EmployeeDetailsForm from './EmployeeDetailsForm';
 import { getNames, employeeLogin, updateCommonInfo } from './actions';
 
+const FORM_NAME = 'EmployeeDetailsForm';
 /* eslint-disable react/prefer-stateless-function */
 export class EmployeeDetails extends React.PureComponent {
   handleSubmit = values => {
-    const data = { userName: 'Biplab', password: '123' };
-    const commonInfo = {
-      age: 30,
+    const data = {
+      name: values.get('name'),
+      email: values.get('email'),
+      gender: values.get('gender'),
+      designation: values.get('designation'),
+      dob: values.get('dob'),
     };
-    this.props.updateCommonInfo(commonInfo);
-    this.props.requestLoginInfo(data);
+    // const data = { userName: 'Biplab', password: '123' };
+    // const commonInfo = {
+    //   age: 30,
+    // };
+    // this.props.updateCommonInfo(commonInfo);
+    // this.props.requestLoginInfo(data);
   };
 
   componentDidMount() {
-    this.props.requestNames();
+    // this.props.requestNames();
   }
 
   render() {
-    const { employeeDetails } = this.props;
+    const { isFormValid } = this.props;
     return (
       <div>
         <EmployeeDetailsForm
-          handleSubmit={this.handleSubmit}
-          employeeDetails={employeeDetails}
+          isFormValid={isFormValid}
+          onSubmit={this.handleSubmit}
         />
       </div>
     );
@@ -49,14 +54,15 @@ export class EmployeeDetails extends React.PureComponent {
 }
 
 EmployeeDetails.propTypes = {
+  isFormValid: PropTypes.bool,
+
   requestNames: PropTypes.func,
   requestLoginInfo: PropTypes.func,
   updateCommonInfo: PropTypes.func,
-  employeeDetails: PropTypes.object,
 };
 
-const mapStateToProps = createStructuredSelector({
-  employeeDetails: makeSelectEmployeeDetails(),
+const mapStateToProps = state => ({
+  isFormValid: isValid(FORM_NAME)(state),
 });
 
 function mapDispatchToProps(dispatch) {

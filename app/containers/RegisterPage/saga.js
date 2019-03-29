@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 
 import * as apis from 'utils/apis';
-import displayError from 'global-components/errors';
+import showError from 'global-components/errors';
 import { SAVE_USER_ACTION } from './constants';
 import { saveUserFalied } from './actions';
 
@@ -15,7 +15,7 @@ export function* requestSaveUser(action) {
     yield call(apis.register, payload);
     yield put(push(`/login`));
   } catch (error) {
-    yield displayError(error, saveUserFalied(error));
+    yield showError(error, saveUserFalied(error));
   }
 }
 

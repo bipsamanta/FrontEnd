@@ -9,6 +9,11 @@ import { GET_NAMES_SUCEEDED, UPDATE_COMMON_INFO } from './constants';
 
 export const initialState = fromJS({
   employee: {
+    name: null,
+    email: null,
+    gender: null,
+    designation: null,
+    dob: null,
     Names: [],
   },
 });

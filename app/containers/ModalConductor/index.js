@@ -25,7 +25,6 @@ const ModalConductor = props => {
   const ModalComponent = MODAL_COMPONENTS[props.name];
 
   if (typeof ModalComponent === 'undefined') return null;
-  debugger;
   return <ModalComponent {...props.modalProps} />;
 };
 
